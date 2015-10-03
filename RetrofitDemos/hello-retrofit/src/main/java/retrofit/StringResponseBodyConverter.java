@@ -12,18 +12,12 @@ class StringResponseBodyConverter implements Converter<ResponseBody, String> {
 
 	@Override
 	public String convert(ResponseBody value) throws IOException {
-		Reader reader = value.charStream();
-		try {
+		try (Reader reader = value.charStream()) {
 			return readToString(reader);
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException ignored) {
-			}
 		}
 	}
 
-	// Adapted from http://www.baeldung.com/java-convert-reader-to-string 
+	// Adapted from http://www.baeldung.com/java-convert-reader-to-string
 	private static String readToString(Reader reader) throws IOException {
 		char[] arr = new char[8 * 1024];
 		StringBuilder buffer = new StringBuilder();

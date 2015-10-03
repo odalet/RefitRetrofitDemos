@@ -37,6 +37,8 @@ public class MyConverterFactory extends Converter.Factory {
 
 	@Override
 	public Converter<?, RequestBody> toRequestBody(Type type, Annotation[] annotations) {
+		// We can access this class because we placed ourselves in the retrofit package.
+		// I thought it was better than copying/pasting GsonRequestBodyConverter.
 		return new GsonRequestBodyConverter<>(gson, type);
 	}
 }

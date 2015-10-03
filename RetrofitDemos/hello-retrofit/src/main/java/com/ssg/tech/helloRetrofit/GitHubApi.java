@@ -5,8 +5,10 @@ import retrofit.http.Body;
 import retrofit.http.Headers;
 import retrofit.http.POST;
 
+import com.squareup.okhttp.ResponseBody;
+
 public interface GitHubApi {
 	@Headers("User-Agent: HelloRetrofit")
 	@POST("/markdown")
-	Call<String> renderAsMarkdown(@Body GitHubRenderRequest request);
+	Call<ResponseBody> renderAsMarkdown(@Body GitHubRenderRequest request);
 }

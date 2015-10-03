@@ -1,4 +1,4 @@
-package com.ssg.tech.helloRetrofit.converters;
+package retrofit;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -8,9 +8,8 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.ResponseBody;
 
-import retrofit.Converter;
-
 public class MyConverterFactory extends Converter.Factory {
+
 	public static MyConverterFactory create() {
 		return create(new Gson());
 	}
@@ -22,8 +21,9 @@ public class MyConverterFactory extends Converter.Factory {
 	private final Gson gson;
 
 	private MyConverterFactory(Gson gson) {
-		if (gson == null)
+		if (gson == null) {
 			throw new NullPointerException("gson == null");
+		}
 		this.gson = gson;
 	}
 
@@ -37,6 +37,6 @@ public class MyConverterFactory extends Converter.Factory {
 
 	@Override
 	public Converter<?, RequestBody> toRequestBody(Type type, Annotation[] annotations) {
-		return new JsonRequestBodyConverter<>(gson, type);
+		return new GsonRequestBodyConverter<>(gson, type);
 	}
 }

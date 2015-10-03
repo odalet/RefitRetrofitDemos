@@ -1,4 +1,4 @@
-package com.ssg.tech.helloRetrofit.converters;
+package retrofit;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -7,7 +7,8 @@ import com.squareup.okhttp.ResponseBody;
 
 import retrofit.Converter;
 
-public class StringResponseBodyConverter implements Converter<ResponseBody, String> {
+// Package visibility so that we are consistent with Retrofit's own converters
+class StringResponseBodyConverter implements Converter<ResponseBody, String> {
 
 	@Override
 	public String convert(ResponseBody value) throws IOException {
@@ -22,6 +23,7 @@ public class StringResponseBodyConverter implements Converter<ResponseBody, Stri
 		}
 	}
 
+	// Adapted from http://www.baeldung.com/java-convert-reader-to-string 
 	private static String readToString(Reader reader) throws IOException {
 		char[] arr = new char[8 * 1024];
 		StringBuilder buffer = new StringBuilder();

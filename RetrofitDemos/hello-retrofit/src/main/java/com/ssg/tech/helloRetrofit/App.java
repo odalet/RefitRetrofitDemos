@@ -2,36 +2,42 @@ package com.ssg.tech.helloRetrofit;
 
 import java.io.IOException;
 
-import com.google.gson.Gson;
-import com.ssg.tech.helloRetrofit.converters.MyConverterFactory;
-
 import retrofit.Call;
-import retrofit.Response;
+import retrofit.MyConverterFactory;
 import retrofit.Retrofit;
 
 public class App {
-	private static final String BASE_API_URL = "https://api.github.com";
+	
+	private static final String BASE_URL = "https://api.github.com";
 
 	public static void main(String[] args) {
+		String md = "**Hello**, [Retrofit](https://github.com/square/retrofit)!";
+		String html = convertToHtml(md);
+		System.out.println(html);
+	}
 
-		// Simple initialization of Retrofit
-		Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_API_URL)
+	private static String convertToHtml(String markdown) {
+		// NB: We need a custom converter factory that:
+		// * Transforms the request into Json
+		// * But returns the raw string in the response.
+		Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
 				.addConverterFactory(MyConverterFactory.create()).build();
+
+		// Prepare the request
+		GitHubRenderRequest request = new GitHubRenderRequest();
+		request.setText(markdown);
+		request.setMode("markdown");
+
 		// Create an instance of our GitHub API interface.
 		GitHubApi api = retrofit.create(GitHubApi.class);
-
-		GitHubRenderRequest request = new GitHubRenderRequest();
-		request.setText("**Hello**, [Refit](https://github.com/paulcbetts/refit)!");
-		request.setMode("markdown");
-		request.setContext("");
-
 		Call<String> call = api.renderAsMarkdown(request);
 
 		try {
-			String html = call.execute().body();
-			System.out.println(html);
+			return call.execute().body();
 		} catch (IOException e) {
 			System.err.println("Github API Invocation faile: " + e);
 		}
+
+		return "";
 	}
 }

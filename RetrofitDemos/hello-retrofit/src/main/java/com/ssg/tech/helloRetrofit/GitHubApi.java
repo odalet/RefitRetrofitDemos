@@ -7,8 +7,7 @@ import retrofit.http.Body;
 import retrofit.http.Headers;
 import retrofit.http.POST;
 
-public interface GitHubApi {	
-	
+public interface GitHubApi {
 	@Headers("User-Agent: HelloRetrofit")
 	@POST("/markdown")
 	Call<ResponseBody> renderAsMarkdown(@Body GitHubRenderRequest request);

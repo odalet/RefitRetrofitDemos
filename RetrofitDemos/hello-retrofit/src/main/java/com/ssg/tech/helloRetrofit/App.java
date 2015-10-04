@@ -28,7 +28,6 @@ public class App {
 		request.setText(markdown);
 		request.setMode("markdown");
 
-		// Create an instance of our GitHub API interface.
 		GitHubApi api = retrofit.create(GitHubApi.class);
 		Call<ResponseBody> call = api.renderAsMarkdown(request);
 

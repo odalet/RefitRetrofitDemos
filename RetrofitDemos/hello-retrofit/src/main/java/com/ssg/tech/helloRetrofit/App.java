@@ -2,12 +2,14 @@ package com.ssg.tech.helloRetrofit;
 
 import java.io.IOException;
 
+import com.squareup.okhttp.ResponseBody;
+
 import retrofit.Call;
-import retrofit.MyConverterFactory;
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class App {
-	
+
 	private static final String BASE_URL = "https://api.github.com";
 
 	public static void main(String[] args) {
@@ -17,11 +19,9 @@ public class App {
 	}
 
 	private static String convertToHtml(String markdown) {
-		// NB: We need a custom converter factory that:
-		// * Transforms the request into Json
-		// * But returns the raw string in the response.
-		Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-				.addConverterFactory(MyConverterFactory.create()).build();
+		// Simple initialization of Retrofit
+		Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL) //
+				.addConverterFactory(GsonConverterFactory.create()).build();
 
 		// Prepare the request
 		GitHubRenderRequest request = new GitHubRenderRequest();
@@ -30,12 +30,12 @@ public class App {
 
 		// Create an instance of our GitHub API interface.
 		GitHubApi api = retrofit.create(GitHubApi.class);
-		Call<String> call = api.renderAsMarkdown(request);
+		Call<ResponseBody> call = api.renderAsMarkdown(request);
 
 		try {
-			return call.execute().body();
+			return call.execute().body().string();
 		} catch (IOException e) {
-			System.err.println("Github API Invocation faile: " + e);
+			System.err.println("Github API Invocation failed: " + e);
 		}
 
 		return "";

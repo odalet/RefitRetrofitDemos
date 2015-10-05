@@ -7,7 +7,7 @@ namespace HelloRefit
 {
     // See https://developer.github.com/v3/markdown/ 
 
-    public class GitHubRenderRequest
+    public class RenderRequest
     {
         [JsonProperty("text")]
         public string Text { get; set; }
@@ -21,7 +21,7 @@ namespace HelloRefit
     public interface IGitHubApi
     {
         [Post("/markdown")]
-        Task<string> RenderAsMarkdown([Body] GitHubRenderRequest request);
+        Task<string> Render([Body] RenderRequest request);
     }
 
     internal static class Program
@@ -30,7 +30,7 @@ namespace HelloRefit
 
         private static void Main(string[] args)
         {
-            var md = "**Hello**, [Refit](https://github.com/paulcbetts/refit)!";
+            var md = "**Hello**, [Refit](https://github.com/paulcbetts/refit)!";            
             var html = ConvertToHtml(md).Result;
             Console.WriteLine(html);
 
@@ -40,9 +40,9 @@ namespace HelloRefit
         private static async Task<string> ConvertToHtml(string markdown)
         {
             var api = RestService.For<IGitHubApi>(baseUrl);
-            var request = new GitHubRenderRequest() { Text = markdown, Mode = "markdown" };
+            var request = new RenderRequest() { Text = markdown, Mode = "markdown" };
 
-            return await api.RenderAsMarkdown(request);
+            return await api.Render(request);
         }
     }
 }

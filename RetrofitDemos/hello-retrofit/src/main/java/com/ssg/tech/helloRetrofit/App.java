@@ -19,17 +19,19 @@ public class App {
 	}
 
 	private static String convertToHtml(String markdown) {
+
 		// Simple initialization of Retrofit
 		Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL) //
 				.addConverterFactory(GsonConverterFactory.create()).build();
 
+		GitHubApi api = retrofit.create(GitHubApi.class);
+		
 		// Prepare the request
-		GitHubRenderRequest request = new GitHubRenderRequest();
+		RenderRequest request = new RenderRequest();
 		request.setText(markdown);
 		request.setMode("markdown");
 
-		GitHubApi api = retrofit.create(GitHubApi.class);
-		Call<ResponseBody> call = api.renderAsMarkdown(request);
+		Call<ResponseBody> call = api.render(request);
 
 		try {
 			return call.execute().body().string();

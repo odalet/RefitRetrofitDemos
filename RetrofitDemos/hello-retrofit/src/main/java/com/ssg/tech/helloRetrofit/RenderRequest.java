@@ -2,7 +2,7 @@ package com.ssg.tech.helloRetrofit;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GitHubRenderRequest {
+public class RenderRequest {
 
 	@SerializedName("text")
 	private String text;

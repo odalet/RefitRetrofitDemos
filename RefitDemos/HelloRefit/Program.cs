@@ -28,13 +28,15 @@ namespace HelloRefit
     {
         private static readonly string baseUrl = "https://api.github.com";
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             var md = "**Hello**, [Refit](https://github.com/paulcbetts/refit)!";            
-            var html = ConvertToHtml(md).Result;
+            var html = ConvertToHtml(md).GetAwaiter().GetResult();
             Console.WriteLine(html);
 
-            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine("Press any key to exit");
+            _ = Console.ReadKey();
         }
 
         private static async Task<string> ConvertToHtml(string markdown)
